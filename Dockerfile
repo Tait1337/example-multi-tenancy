@@ -10,5 +10,5 @@ LABEL maintainer="tait1337"
 # App
 WORKDIR /app
 COPY ./target/example-multi-tenancy-1.0.0-SNAPSHOT.jar ./app.jar
-EXPOSE 8081
+EXPOSE $PORT
 ENTRYPOINT ["java", "-jar", "app.jar"]
