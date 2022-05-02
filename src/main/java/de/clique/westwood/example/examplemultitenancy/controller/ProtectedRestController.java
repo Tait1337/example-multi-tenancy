@@ -2,11 +2,16 @@ package de.clique.westwood.example.examplemultitenancy.controller;
 
 import de.clique.westwood.example.examplemultitenancy.service.DatabaseService;
 import de.clique.westwood.example.examplemultitenancy.service.UserService;
+
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/protected")
@@ -23,7 +28,11 @@ public class ProtectedRestController {
 
   @GetMapping("/tenant")
   public String getTenant() {
-    return userService.getTenant().get();
+    Optional<String> tenant = userService.getTenant();
+    if (tenant.isEmpty()) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+    return tenant.get();
   }
 
   @GetMapping("/userid")

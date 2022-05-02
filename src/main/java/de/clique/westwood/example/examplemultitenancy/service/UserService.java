@@ -52,8 +52,6 @@ public class UserService {
    * @return the stream of user details
    */
   public Stream<String> getUserdetails(){
-    Authentication authentication = getAuthentication();
-
     String userId = null;
     String username = null;
     String email = null;
@@ -61,16 +59,19 @@ public class UserService {
     String lastname = null;
     String fullname = null;
 
-    Object principal = authentication.getPrincipal();
-    if (authentication != null && authentication.getPrincipal() instanceof Jwt jwt){
-      userId = authentication.getName();
-      username = (String) jwt.getClaims().get("preferred_username");
-      email = (String) jwt.getClaims().get("email");
-      firstname = (String) jwt.getClaims().get("given_name");
-      lastname = (String) jwt.getClaims().get("family_name");
-      fullname = (String) jwt.getClaims().get("name");
-    } else if (principal instanceof String){
-      userId = authentication.getName();
+    Authentication authentication = getAuthentication();
+    if (authentication != null){
+      Object principal = authentication.getPrincipal();
+      if (principal instanceof Jwt jwt){
+        userId = authentication.getName();
+        username = (String) jwt.getClaims().get("preferred_username");
+        email = (String) jwt.getClaims().get("email");
+        firstname = (String) jwt.getClaims().get("given_name");
+        lastname = (String) jwt.getClaims().get("family_name");
+        fullname = (String) jwt.getClaims().get("name");
+      } else if (principal instanceof String){
+        userId = authentication.getName();
+      }
     }
     return Stream.of(userId, username, email, firstname, lastname, fullname);
   }
