@@ -51,7 +51,7 @@ exit
 
 Start and configure the OAuth Server (takes some minutes).
 ```
-docker run -d -p 8080:8080 --name example-multi-tenancy-keycloak -e KC_FEATURES=dynamic_scopes -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=secret -e KEYCLOAK_IMPORT=/tmp/example-realm-tenant1.json,/tmp/example-realm-tenant2.json -v $PWD/realms:/tmp quay.io/keycloak/keycloak start-dev
+docker run -d -p 8080:8080 --name example-multi-tenancy-keycloak -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=secret -v $PWD/realms:/tmp quay.io/keycloak/keycloak:18.0 start-dev
 Open http://localhost:8080/admin and login with admin/secret
 Create a new realm tenant1 using the config from ./realms/example-realm-tenant1.json
 Create a new realm tenant2 using the config from ./realms/example-realm-tenant2.json
